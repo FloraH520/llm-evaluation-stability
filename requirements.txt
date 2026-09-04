@@ -1,0 +1,5 @@
+# Dependencies will be pinned after the Day 2 experimental design is frozen.
+# Avoid adding model-provider SDKs before model selection is finalized.
+pandas
+numpy
+matplotlib
