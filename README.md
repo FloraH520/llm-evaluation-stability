@@ -1,30 +1,59 @@
-# Are LLM Rankings Stable?
+# When Is a Model Actually Better?
 
-*A replication and modern-model study of evaluation sensitivity.*
+*Evaluating the stability of LLM capability rankings across evaluation and inference conditions.*
 
 ## Research Question
-How stable are LLM capability rankings under seemingly minor evaluation choices, and when are benchmark differences large enough to justify choosing one model over another in real-world deployment?
+When we say one language model is "better" than another, how stable is that conclusion across reasonable evaluation choices and inference conditions—and when is the observed advantage large enough to justify a real deployment decision?
 
 ## Why This Matters
-Benchmark scores are often treated as stable evidence of model capability. Prior work suggests that small evaluation choices can change measured performance and even alter model rankings. This project starts by reproducing that phenomenon, then extends the analysis to newer models and practical model-selection tradeoffs such as cost, latency, and stability.
+Model capability is often summarized by a benchmark score or leaderboard rank. But measured performance can depend on how the evaluation is constructed and how capability is elicited at inference time. This project studies the gap between **observed benchmark performance** and a more robust conclusion about **what different models can actually do**.
 
-## Current Plan
-1. Reproduce a peer-reviewed result from **When Benchmarks are Targets: Revealing the Sensitivity of Large Language Model Leaderboards** (ACL 2024).
-2. Run a controlled modern-model extension.
-3. Analyze whether apparent model rankings and specializations remain stable across evaluation conditions.
-4. Translate the findings into deployment guidance for model selection.
+The practical goal is model selection: understanding not only which model scores highest once, but whether its apparent advantage is stable, reproducible, and worth its cost and latency in deployment.
 
-## Anchor Paper
-- ACL Anthology: https://aclanthology.org/2024.acl-long.744/
+## Research Lineage
+### 1. Replication anchor — evaluation sensitivity
+**When Benchmarks are Targets: Revealing the Sensitivity of Large Language Model Leaderboards** — ACL 2024 Long Paper
+- Paper: https://aclanthology.org/2024.acl-long.744/
 - PDF: https://aclanthology.org/2024.acl-long.744.pdf
-- Official code: https://github.com/National-Center-for-AI-Saudi-Arabia/lm-evaluation-harness
+- Code: https://github.com/National-Center-for-AI-Saudi-Arabia/lm-evaluation-harness
+
+This gives the project a peer-reviewed, reproducible starting point: test whether seemingly minor evaluation choices can materially change measured performance or model rankings.
+
+### 2. Methodology update — reproducible evaluation
+**OLMES: A Standard for Language Model Evaluations** — Findings of NAACL 2025
+- Paper: https://aclanthology.org/2025.findings-naacl.282/
+- Code: https://github.com/allenai/olmes
+
+OLMES motivates treating prompt formatting, in-context examples, normalization, task formulation, and detailed experiment logging as part of the evaluation itself rather than incidental implementation details.
+
+### 3. Frontier extension — inference conditions
+**How Inference Compute Shapes Frontier LLM Evaluation** — 2026 preprint
+- Paper: https://arxiv.org/abs/2606.17930
+
+This motivates a later extension beyond static benchmark perturbations: test whether conclusions about model capability change with inference-time conditions such as compute budget, repeated attempts, context handling, or feedback.
+
+### 4. Model-selection / deployment context
+**The Capability Frontier: Benchmarks Miss 82% of Model Performance** — 2026 preprint
+- Paper: https://arxiv.org/abs/2606.26836
+
+This is related work rather than the replication foundation. It motivates thinking about model specialization, multiple generations, cost-aware selection, and whether a single model/run adequately represents achievable capability.
+
+## Project Structure
+**Phase 1 — Replication:** reproduce a scoped ACL 2024 evaluation-sensitivity result.
+
+**Phase 2 — Modern-model extension:** test whether the phenomenon persists on newer models and whether sensitivity differs across models.
+
+**Phase 3 — Capability elicitation extension:** if Phase 1–2 produce a defensible signal, study whether model rankings change under selected inference conditions motivated by newer work.
+
+**Phase 4 — Deployment analysis:** combine performance, stability, latency, and API cost to ask when an apparent benchmark advantage actually supports choosing one model over another.
 
 ## Planned Outputs
 - Reproducible evaluation pipeline
 - Pilot and main experiment datasets
 - Statistical and visual analysis of ranking stability
+- Modern-model / inference-condition extension if justified by earlier results
 - 4–6 page technical report
-- Deployment-oriented cost/performance analysis
+- Deployment-oriented model-selection analysis
 
 ## Repository Structure
 ```text
@@ -43,4 +72,4 @@ Benchmark scores are often treated as stable evidence of model capability. Prior
 ## Status
 **Day 1 / 12 — Literature review and replication scoping**
 
-The experimental design, models, benchmarks, perturbations, and metrics will be frozen only after the anchor paper has been fully reviewed and the replication scope passes the first research-design gate.
+The ACL 2024 paper is the replication anchor, not the endpoint. Experimental choices will be frozen only after the anchor paper is understood and the replication scope passes the first research-design gate. Newer 2025–2026 work informs the extension; it does not substitute for a clean replication design.
